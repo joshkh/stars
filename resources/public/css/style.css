@@ -1,0 +1,16 @@
+body {
+  background: black;
+  overflow: hidden
+}
+
+
+
+svg.starfield {
+  background: black;
+  width: 2000px;
+  height: 2000px;
+}
+
+circle.star {
+  fill: white;
+}
