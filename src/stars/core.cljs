@@ -21,7 +21,8 @@
    (dommy/set-attr! :class "star"
                     :cx (- (rand-int 3000) 1500)
                     :cy (- (rand-int 3000) 1500)
-                    :r (rand 1))))
+                    :opacity (rand 1)
+                    :r (rand 1.2))))
 
 (defn field []
   (-> (create-svg-element :svg)
@@ -40,22 +41,61 @@
                    :repeatCount "indefinite"))
 
 
+        ;  <filter id="fractal" filterUnits="objectBoundingBox"
+        ;    x="0%" y="0%" width="100%" height="100%">
+        ;    <feTurbulence id="fe-turb-fractal" type="fractalNoise" baseFrequency="0.0205" numOctaves="7"/>
+        ;  </filter>
+
+
+(defn filters []
+  (-> (create-svg-element :defs)
+      (-> (dommy/append! (-> (create-svg-element :filter)
+                             (dommy/set-attr! :id "heavycloud"
+                                              :filterUnits "objectBoundingBox"
+                                              :x "0%"
+                                              :y "0%"
+                                              :width "100%"
+                                              :height "100%")
+                             (dommy/append! (-> (create-svg-element :feTurbulence)
+                                                (dommy/set-attr! :id "fe-turb-fractal"
+                                                                 :type "fractalNoise"
+                                                                 :baseFrequency "0.0205"
+                                                                 :numOctaves "7")))
+                             )))
+
+      ))
+
 (defn star-plane []
   (let [svg (dommy/set-attr! (create-svg-element :g)
-                             :transform "translate(1000,1000)")]
-    (dommy/append! (reduce dommy/append! svg (take 5000 (repeatedly star))) (animateTransform))))
+                             :transform "translate(400,400)")]
+    (dommy/append! (reduce dommy/append! svg (take 3 (repeatedly star))) (animateTransform))))
+
+(defn ground []
+  (-> (create-svg-element :rect)
+      (dommy/set-attr! :class "ground"
+                       :x 0
+                       :filter "url(#fe-turb-fractal)"
+                       :y (- (.-innerHeight js/window) 300)
+                       :height 400
+                       :width (.-innerWidth js/window))
+      (dommy/append! (-> (ground)))))
 
 (defn mountains []
   (->
    (create-svg-element :g)
    (dommy/set-attr! :transform "scale(1,-1)")
    (dommy/append! (-> (create-svg-element :g)
-                     (dommy/set-attr! :id "mountain-range" :transform "translate(0, -500)")))))
+                     (dommy/set-attr! :id "mountain-range" :transform (str "translate(0, -"
+                                                                          ;  (.-innerHeight js/window)
+                                                                           (- (.-innerHeight js/window) 300)
+                                                                           ")"))))))
 
 
 (defn buildall []
   (-> (dommy/append! (field) (star-plane))
-      (dommy/append! (mountains))))
+      ; (dommy/append! (ground))
+      (dommy/append! (mountains))
+      (dommy/append! (filters))))
 
 ; (.log js/console "animate" )
 
