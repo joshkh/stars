@@ -1,16 +1,29 @@
 body {
-  background: black;
-  overflow: hidden
+  /*background: black;*/
+  /*overflow: hidden*/
 }
 
 
 
 svg.starfield {
   background: black;
-  width: 2000px;
-  height: 2000px;
+  /*width: 500px;
+  height: 500px;*/
+  position: absolute;
+  background: rgba(0,0,0,1);background: rgba(0,0,0,1);
+background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(36,36,36,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,1)), color-stop(100%, rgba(36,36,36,1)));
+background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(36,36,36,1) 100%);
+background: -o-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(36,36,36,1) 100%);
+background: -ms-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(36,36,36,1) 100%);
+background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(36,36,36,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#242424', GradientType=0 );
 }
 
 circle.star {
   fill: white;
+}
+
+polygon {
+  fill: black;
 }
